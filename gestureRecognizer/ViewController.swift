@@ -10,15 +10,21 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var tombo: UIImageView!
+    
+    //最初の回転角度
+    var lastRotation:CGFloat = 0.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        /*
         view.backgroundColor = UIColor(hue: kakudo/360, saturation: 1.0, brightness: 1.0, alpha: 1.0)
+ */
     }
-    var kakudo:CGFloat = 180.0
+    //var kakudo:CGFloat = 180.0
 
 
-    @IBAction func dragging(_ sender: UIPanGestureRecognizer) {
+    @IBAction func dragging(_ sender: UIRotationGestureRecognizer) {
         /*
         //ドラッグしているビュー
         let tombo = sender.view!
@@ -26,6 +32,7 @@ class ViewController: UIViewController {
         //指の座標を合わせる
         tombo.center = sender.location(in: self.view)
  */
+        /*
         //ドラッグした量を調べる
         let translation = sender.translation(in: view)
         //水平方向の移動量
@@ -48,7 +55,21 @@ class ViewController: UIViewController {
         //ビューの背景色を変更する
         let color = UIColor(hue: kakudo/360, saturation: 1.0, brightness: 1.0, alpha: 1.0)
         view.backgroundColor = color
+        */
         
+        switch sender.state {
+        case .began:
+            //前回の回転角度から始める
+            sender.rotation = lastRotation
+        case .changed:
+            //回転角度にトンボを合わせる
+            tombo.transform = CGAffineTransform(rotationAngle: sender.rotation)
+        case .ended:
+            //回転終了時の回転角度を保存する
+            lastRotation = sender.rotation
+        default:
+            break
+        }
     }
 }
 
